@@ -8,10 +8,10 @@ export default function App() {
     const [page, setPage] = useState<Pages>("verify");
 
     return (
-      <>
+      <div className="min-h-screen w-full bg-neutral-900 text-neutral-50">
         {page === "verify" && (
           <VerifyPage/>
         )}
-      </>
+      </div>
     );
 }
