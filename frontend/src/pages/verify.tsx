@@ -1,7 +1,11 @@
+import { HeadingText } from "../components/typography";
+
 export default function VerifyPage() {
     return (
-        <div>
-            <h2>Verify Page</h2>
+        <div className="min-h-screen w-full flex flex-col items-center justify-center">
+            <div>
+                <HeadingText>Login</HeadingText>
+            </div>
         </div>
     );
 }
