@@ -60,6 +60,7 @@ export default function VerifyPage() {
               mt-4 w-full py-2 rounded-lg bg-yellow-400 text-neutral-900
               font-semibold text-sm transition hover:bg-yellow-500
               focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1
+              cursor-pointer
             "
           >
             Login
