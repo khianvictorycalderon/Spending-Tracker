@@ -15,7 +15,7 @@ export default function VerifyPage() {
     <div className="min-h-screen w-full flex items-center justify-center bg-neutral-900 p-4">
       <div className="w-full max-w-md p-8 bg-neutral-800 rounded-xl shadow-lg flex flex-col gap-6">
 
-        <HeadingText className="text-center text-yellow-400 text-2xl">
+        <HeadingText className="text-center text-yellow-400">
           Login Account
         </HeadingText>
 
