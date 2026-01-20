@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { InputLabel } from "../components/input-label";
 import { HeadingText } from "../components/typography";
+import type { Pages } from "../App";
 
-export default function VerifyPage() {
+interface VerifyPageProps {
+    setPage: React.Dispatch<React.SetStateAction<Pages>>;
+}
+
+export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ password, otp });
+
+    // If validation is successful
+    setPage("logged");
   };
 
   return (

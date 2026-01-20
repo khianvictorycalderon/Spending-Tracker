@@ -1,7 +1,7 @@
 import { useState } from "react";
 import VerifyPage from "./pages/verify";
 
-type Pages = "verify";
+export type Pages = "verify" | "logged";
 
 export default function App() {
 
@@ -10,7 +10,7 @@ export default function App() {
     return (
       <div className="min-h-screen w-full bg-neutral-900 text-neutral-50">
         {page === "verify" && (
-          <VerifyPage/>
+          <VerifyPage setPage={setPage}/>
         )}
       </div>
     );
