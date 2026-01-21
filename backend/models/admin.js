@@ -14,4 +14,8 @@ const Admin = new mongoose.Schema({
         type: Number,
         required: true
     }
+}, {
+    timestamps: true
 });
+
+module.exports = mongoose.model("Admin", Admin);
