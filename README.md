@@ -56,3 +56,13 @@ This section is provided for reference only, to give you insight into how the pr
     ],
   })
   ```
+
+---
+
+## Mechanics (New Concept):
+
+- Admin has one account only
+- Admin logs in with default password of `admin123` and default OTP of `123456`.
+- After logging in, Admin should immediately change the password.
+- After each logout, a new OTP will be generated each time.
+- Admin can now add users and track their spendings, and view data insights.
