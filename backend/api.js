@@ -8,7 +8,7 @@ router.post("/login", (req, res) => {
 
     // Add sample request
     res.status(200).json({
-        message: "Data recieved successfully",
+        message: "Data received successfully",
         type: "success"
     });
 
