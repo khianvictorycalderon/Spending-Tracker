@@ -8,6 +8,9 @@ const AtomicAdmin = new mongoose.Schema({
     otp: {
         type: String,
         required: true
+    },
+    sessionToken: {
+        type: String
     }
 }, {
     timestamps: true

@@ -31,18 +31,24 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
     try {
       
       const res = await axios.post(`${ENV.VITE_API_URL}/api/login`, {
-        password, otp
+        password, otp: String(otp)
+      }, {
+        withCredentials: true
       });
       
-      alert(res.data.message || "Login success!");
-    
-      // If validation is successful
-      setPage("logged");
+      if (res.status === 200) setPage("logged");
 
-    } catch (e: unknown) {
-      const errorMessage = e instanceof Error ? e.message : String(e);
-      alert(`Login failed: ${errorMessage}`);
-      console.error(`Login failed: ${errorMessage}`);
+      alert(res.data.message);
+
+    } catch (err: unknown) {
+      alert(
+        axios.isAxiosError(err)
+          ? err.response?.data?.message || `Request failed (${err.response?.status})`
+          : err instanceof Error
+            ? err.message
+            : "Unknown error"
+      );
+      console.error("Login failed:", err);
     }
   };
 
@@ -79,7 +85,7 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
             label="OTP"
             value={otp}
             setValue={setOTP}
-            type="number"
+            type="text"
             className="
               bg-transparent
               text-white
