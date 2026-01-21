@@ -24,7 +24,6 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
         withCredentials: true
       });
       setPopupMessage(`Logged out! New OTP: ${res.data.otp}`);
-      setPage("verify");
     } catch (err: unknown) {
       const msg = axios.isAxiosError(err)
         ? err.response?.data?.message || `Request failed (${err.response?.status})`
@@ -67,7 +66,10 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
         <MessagePopUp
           message={popupMessage}
           theme="dark"
-          onClose={() => setPopupMessage(null)}
+          onClose={() => {
+            if (popupMessage.includes("New OTP")) setPage("verify");
+            setPopupMessage(null);
+          }}
         />
       )}
     </>
