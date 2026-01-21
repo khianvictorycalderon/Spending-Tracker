@@ -10,13 +10,6 @@ interface VerifyPageProps {
     setPage: React.Dispatch<React.SetStateAction<Pages>>;
 }
 
-type FeedbackLabelTypes = "success" | "error" | "warning" | "default";
-
-interface FeedbackLabelProps {
-  message: string;
-  type: FeedbackLabelTypes;
-}
-
 export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
