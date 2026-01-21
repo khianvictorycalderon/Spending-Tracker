@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { InputLabel } from "../components/input-label";
 import { HeadingText } from "../components/typography";
 import type { Pages } from "../App";
