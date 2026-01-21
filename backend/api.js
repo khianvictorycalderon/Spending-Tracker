@@ -14,8 +14,4 @@ router.post("/login", (req, res) => {
 
 });
 
-router.get("/login", (_req, res) => {
-    res.send("Login is working...");
-})
-
 module.exports = router;
