@@ -93,7 +93,7 @@ router.post("/login", async (req, res) => {
 });
 
 // After each logout, it generates new OTP for the next login
-router.delete("/logout", async (req, res) => {
+router.delete("/logout", async (_req, res) => {
   try {
     const admin = await AtomicAdmin.findOne();
     if (!admin) {
