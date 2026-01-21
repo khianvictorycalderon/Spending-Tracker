@@ -1,10 +1,10 @@
-import { useId, type HTMLAttributes } from "react";
+import { useId, type InputHTMLAttributes } from "react";
 
-interface InputLabelProps<T> extends HTMLAttributes<HTMLInputElement> {
+interface InputLabelProps<T> extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   label: string;
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
-  type?: "text" | "number";
+  type?: "text" | "number" | "password";
   className?: string;
 }
 

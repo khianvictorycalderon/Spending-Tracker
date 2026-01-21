@@ -53,7 +53,7 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
             label="Password"
             value={password}
             setValue={setPassword}
-            type="text"
+            type="password"
             className="
               bg-transparent
               text-white
@@ -62,13 +62,14 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
               focus:border-yellow-400
               w-full
             "
+            required
           />
 
           <InputLabel
             label="OTP"
             value={otp}
             setValue={setOTP}
-            type="text"
+            type="number"
             className="
               bg-transparent
               text-white
@@ -77,6 +78,7 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
               focus:border-yellow-400
               w-full
             "
+            required
           />
 
           <button
