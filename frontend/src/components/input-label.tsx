@@ -1,6 +1,6 @@
-import { useId } from "react";
+import { useId, type HTMLAttributes } from "react";
 
-interface InputLabelProps<T> {
+interface InputLabelProps<T> extends HTMLAttributes<HTMLInputElement> {
   label: string;
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
@@ -14,6 +14,7 @@ export function InputLabel<T extends string | number>({
   setValue,
   type = "text",
   className = "",
+  ...props
 }: InputLabelProps<T>) {
   const id = useId();
 
@@ -48,6 +49,7 @@ export function InputLabel<T extends string | number>({
             focus:ring-2 focus:ring-current focus:border-current
             disabled:opacity-50 disabled:cursor-not-allowed
         `}
+        {...props}
       />
     </div>
   );
