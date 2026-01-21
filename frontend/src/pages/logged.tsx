@@ -36,7 +36,7 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
   };
 
   const buttonClassNames =
-    "px-3 mx-3 py-2 my-2 hover:bg-neutral-700 transition duration-300 cursor-pointer";
+    "px-3 mx-1 py-2 my-2 hover:bg-neutral-700 transition duration-300 cursor-pointer";
   const navbarButtons = [
     { label: "Account", action: () => setLoggedPage("account"), className: buttonClassNames },
     { label: "Track", action: () => setLoggedPage("track"), className: buttonClassNames },
@@ -59,8 +59,8 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
 
   return (
     <>
-      <NavBar title="Spending Tracker" buttons={navbarButtons} />
-      <div className="mt-20">{pageContent}</div>
+      <NavBar className="bg-neutral-800" title="Spending Tracker" buttons={navbarButtons} />
+      <div className="min-h-screen p-20">{pageContent}</div>
 
       {popupMessage && (
         <MessagePopUp

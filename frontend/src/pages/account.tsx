@@ -1,6 +1,6 @@
 export function AccountPage() {
   return (
-    <div className="p-6 text-white">
+    <div className="text-white">
         Account Management Page
     </div>
   );

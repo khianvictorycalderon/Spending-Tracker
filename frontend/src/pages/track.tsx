@@ -1,6 +1,6 @@
 export function TrackPage() {
   return (
-    <div className="p-6 text-white">
+    <div className="text-white">
         Track Spending Page
     </div>
   );

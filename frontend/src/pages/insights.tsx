@@ -1,6 +1,6 @@
 export function InsightsPage() {
   return (
-    <div className="p-6 text-white">
+    <div className="text-white">
         Insights Page
     </div>
   );
