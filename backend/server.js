@@ -8,6 +8,7 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_req, res) => {
     res.json({
@@ -17,7 +18,8 @@ app.get("/", (_req, res) => {
 });
 
 // Adding sub routers
-app.post("/api", require("./api"));
+app.use("/api", require("./api"));
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);

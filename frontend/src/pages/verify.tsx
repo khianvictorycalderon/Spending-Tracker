@@ -2,21 +2,45 @@ import { useState } from "react";
 import { InputLabel } from "../components/input-label";
 import { HeadingText } from "../components/typography";
 import type { Pages } from "../App";
+import axios from "axios";
+
+const ENV = import.meta.env;
 
 interface VerifyPageProps {
     setPage: React.Dispatch<React.SetStateAction<Pages>>;
+}
+
+type FeedbackLabelTypes = "success" | "error" | "warning" | "default";
+
+interface FeedbackLabelProps {
+  message: string;
+  type: FeedbackLabelTypes;
 }
 
 export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ password, otp });
 
-    // If validation is successful
-    setPage("logged");
+    try {
+      
+      const res = await axios.post(`${ENV.VITE_API_URL}/api/login`, {
+        password, otp
+      });
+      
+      alert(res.data.message || "Login success!");
+    
+      // If validation is successful
+      setPage("logged");
+
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      alert(`Login failed: ${errorMessage}`);
+      console.error(`Login failed: ${errorMessage}`);
+    }
   };
 
   return (
