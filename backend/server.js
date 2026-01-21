@@ -14,10 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (_req, res) => {
-    res.json({
-        message: "API is working!",
-        type: "success"
-    });
+    res.send("API is working!");
 });
 
 // Adding sub routers
