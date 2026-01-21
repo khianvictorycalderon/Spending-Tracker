@@ -13,10 +13,6 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (_req, res) => {
-    res.send("API is working!");
-});
-
 // Adding sub routers
 app.use("/api", require("./api"));
 

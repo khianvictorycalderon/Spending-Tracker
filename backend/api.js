@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+router.get("/", (_req, res) => {
+    res.send("API is working!");
+});
+
 router.post("/login", (req, res) => {
     const { password, otp } = req.body;
 
