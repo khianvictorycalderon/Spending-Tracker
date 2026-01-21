@@ -37,7 +37,7 @@ export function NavBar({
           <div className="flex gap-2 items-center">
             {image && (
               <img
-                className="hidden md:block h-[50px] w-auto my-2"
+                className="hidden md:block h-12.5 w-auto my-2"
                 src={image}
                 alt={`${title}'s Logo`}
               />
