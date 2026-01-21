@@ -14,6 +14,8 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const createAdmin = async() => {
     try {
       const res = await axios.post(`${ENV.VITE_API_URL}/api/admin`);
@@ -25,8 +27,10 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
     await createAdmin();
+    setIsSubmitting(true);
 
     try {
       
@@ -49,6 +53,8 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
             : "Unknown error"
       );
       console.error("Login failed:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -76,9 +82,12 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
               border-yellow-400
               focus:ring-yellow-400
               focus:border-yellow-400
+              disabled:cursor-not-allowed disabled:bg-neutral-300
+              transition duration-300
               w-full
             "
             required
+            disabled={isSubmitting}
           />
 
           <InputLabel
@@ -92,17 +101,23 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
               border-yellow-400
               focus:ring-yellow-400
               focus:border-yellow-400
+              disabled:cursor-not-allowed disabled:bg-neutral-300
+              transition duration-300
               w-full
             "
             required
+            disabled={isSubmitting}
           />
 
           <button
+            disabled={isSubmitting}
             type="submit"
             className="
               mt-4 w-full py-2 rounded-lg bg-yellow-400 text-neutral-900
-              font-semibold text-sm transition hover:bg-yellow-500
+              font-semibold text-sm hover:bg-yellow-500
               focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1
+              disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-600
+              transition duration-300
               cursor-pointer
             "
           >
