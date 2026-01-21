@@ -1,30 +1,50 @@
 const express = require("express");
 const router = express.Router();
 const Admin = require("./models/admin");
+const bcrypt = require("bcrypt");
 
 const DEFAULT_PASSWORD = "admin123";
-const DEFAULT_OTP = 10002000;
+const DEFAULT_OTP = "123456";
 
 router.get("/", (_req, res) => {
     res.send("API is working!");
 });
 
-router.post("/login", (req, res) => {
-    
-    const { password, otp } = req.body;
+router.post("/admin", async (_req, res) => {
+    try {
 
-    // Default password: admin123
-    // Default otp: 10002000
-    // On first login, change the password immediately
+        const admins = await Admin.find();
 
-    // Auto create first user:
-    
+        if (admins.length >= 1) {
+            return res.status(400).json({
+                message: "Admin already exists",
+                type: "warning"
+            });
+        }
 
-    res.status(200).json({
-        message: "Data received successfully",
-        type: "success"
-    });
+        const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
+        const hashedOTP = await bcrypt.hash(DEFAULT_OTP, 10);
 
+        const newAdmin = new Admin({
+            password: hashedPassword,
+            otp: hashedOTP
+        });
+
+        await newAdmin.save();
+
+        return res.status(201).json({
+            message: "Admin created successfully",
+            type: "success"
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+            type: "error"
+        });
+    }
 });
 
 module.exports = router;
