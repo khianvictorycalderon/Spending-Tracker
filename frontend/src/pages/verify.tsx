@@ -3,55 +3,57 @@ import { InputLabel } from "../components/input-label";
 import { HeadingText } from "../components/typography";
 import type { Pages } from "../App";
 import axios from "axios";
+import { MessagePopUp } from "../components/pop-up";
 
 const ENV = import.meta.env;
 
 interface VerifyPageProps {
-    setPage: React.Dispatch<React.SetStateAction<Pages>>;
+  setPage: React.Dispatch<React.SetStateAction<Pages>>;
 }
 
 export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
-
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const createAdmin = async() => {
+  // Pop-up state
+  const [popupMessage, setPopupMessage] = useState<string | null>(null);
+
+  const createAdmin = async () => {
     try {
       const res = await axios.post(`${ENV.VITE_API_URL}/api/admin`);
       console.log(res.data.message);
     } catch (e: unknown) {
       const errorMessage = e instanceof Error ? e.message : String(e);
       console.error(`Admin account creation failed: ${errorMessage}`);
+      setPopupMessage(`Admin account creation failed: ${errorMessage}`);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-
     e.preventDefault();
     await createAdmin();
     setIsSubmitting(true);
 
     try {
-      
-      const res = await axios.post(`${ENV.VITE_API_URL}/api/login`, {
-        password, otp: String(otp)
-      }, {
-        withCredentials: true
-      });
-      
+      const res = await axios.post(
+        `${ENV.VITE_API_URL}/api/login`,
+        { password, otp: String(otp) },
+        { withCredentials: true }
+      );
+
       if (res.status === 200) setPage("logged");
 
-      alert(res.data.message);
-
+      // Show success message
+      setPopupMessage(res.data.message);
     } catch (err: unknown) {
-      alert(
-        axios.isAxiosError(err)
-          ? err.response?.data?.message || `Request failed (${err.response?.status})`
-          : err instanceof Error
-            ? err.message
-            : "Unknown error"
-      );
+      const msg = axios.isAxiosError(err)
+        ? err.response?.data?.message || `Request failed (${err.response?.status})`
+        : err instanceof Error
+        ? err.message
+        : "Unknown error";
+
+      setPopupMessage(msg);
       console.error("Login failed:", err);
     } finally {
       setIsSubmitting(false);
@@ -61,16 +63,11 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-neutral-900 p-4">
       <div className="w-full max-w-md p-8 bg-neutral-800 rounded-xl shadow-lg flex flex-col gap-6">
-
         <HeadingText className="text-center text-yellow-400">
           Login Account
         </HeadingText>
 
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={handleSubmit}
-        >
-
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <InputLabel
             label="Password"
             value={password}
@@ -125,6 +122,15 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
           </button>
         </form>
       </div>
+
+      {/* Message Pop-up */}
+      {popupMessage && (
+        <MessagePopUp
+          message={popupMessage}
+          theme="dark"
+          onClose={() => setPopupMessage(null)}
+        />
+      )}
     </div>
   );
 }
