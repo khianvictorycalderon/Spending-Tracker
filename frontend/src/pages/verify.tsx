@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputLabel } from "../components/input-label";
 import { HeadingText } from "../components/typography";
 import type { Pages } from "../App";
@@ -14,9 +14,19 @@ export default function VerifyPage({ setPage }: VerifyPageProps) {
   const [password, setPassword] = useState<string>("");
   const [otp, setOTP] = useState<string>("");
 
+  const createAdmin = async() => {
+    try {
+      const res = await axios.post(`${ENV.VITE_API_URL}/api/admin`);
+      console.log(res.data.message);
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      console.error(`Admin account creation failed: ${errorMessage}`);
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ password, otp });
+    await createAdmin();
 
     try {
       

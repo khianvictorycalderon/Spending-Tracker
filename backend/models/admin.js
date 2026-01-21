@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Admin = new mongoose.Schema({
+const AtomicAdmin = new mongoose.Schema({
     password: {
         type: String,
         required: true,
@@ -13,4 +13,7 @@ const Admin = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Admin", Admin);
+// This ensures only ONE admin document can exist
+AtomicAdmin.index({}, { unique: true });
+
+module.exports = mongoose.model("AtomicAdmin", AtomicAdmin);
