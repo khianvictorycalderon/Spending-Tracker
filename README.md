@@ -28,7 +28,7 @@ This section is provided for reference only, to give you insight into how the pr
 ---
 
 ## Backend Dependencies
-- `npm install express mongoose cors dotenv`
+- `npm install express mongoose cors dotenv bcryptjs`
 - `npm install --save-dev nodemon`
 
 ## Backend Configuration Dependencies
