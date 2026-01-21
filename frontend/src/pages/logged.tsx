@@ -1,38 +1,75 @@
 import axios from "axios";
 import type { Pages } from "../App";
+import { useState } from "react";
+import { NavBar } from "../components/navbar";
+import { MessagePopUp } from "../components/pop-up";
+import { AccountPage } from "./account";
+import { TrackPage } from "./track";
+import { InsightsPage } from "./insights";
 
 interface LoggedPageProps {
   setPage: React.Dispatch<React.SetStateAction<Pages>>;
 }
 
+// Sub pages of logged page
+type LoggedPages = "account" | "track" | "insights";
+
 export default function LoggedPage({ setPage }: LoggedPageProps) {
+  const [loggedPage, setLoggedPage] = useState<LoggedPages>("track");
+  const [popupMessage, setPopupMessage] = useState<string | null>(null);
+
   const handleLogout = async () => {
     try {
       const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/logout`, {
         withCredentials: true
       });
-      alert(`Logged out! New OTP: ${res.data.otp}`);
+      setPopupMessage(`Logged out! New OTP: ${res.data.otp}`);
       setPage("verify");
     } catch (err: unknown) {
-      alert(
-        axios.isAxiosError(err)
-          ? err.response?.data?.message || `Request failed (${err.response?.status})`
-          : err instanceof Error
-            ? err.message
-            : "Unknown error"
-      );
+      const msg = axios.isAxiosError(err)
+        ? err.response?.data?.message || `Request failed (${err.response?.status})`
+        : err instanceof Error
+        ? err.message
+        : "Unknown error";
+
+      setPopupMessage(msg);
     }
   };
 
+  const buttonClassNames =
+    "px-3 mx-3 py-2 my-2 hover:bg-neutral-700 transition duration-300 cursor-pointer";
+  const navbarButtons = [
+    { label: "Account", action: () => setLoggedPage("account"), className: buttonClassNames },
+    { label: "Track", action: () => setLoggedPage("track"), className: buttonClassNames },
+    { label: "Insights", action: () => setLoggedPage("insights"), className: buttonClassNames },
+    { label: "Logout", action: handleLogout, className: buttonClassNames }
+  ];
+
+  let pageContent;
+  switch (loggedPage) {
+    case "account":
+      pageContent = <AccountPage />;
+      break;
+    case "track":
+      pageContent = <TrackPage />;
+      break;
+    case "insights":
+      pageContent = <InsightsPage />;
+      break;
+  }
+
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h1 className="text-2xl font-bold text-green-400">You are logged in!</h1>
-      <button
-        onClick={handleLogout}
-        className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-      >
-        Logout
-      </button>
-    </div>
+    <>
+      <NavBar title="Spending Tracker" buttons={navbarButtons} />
+      <div className="mt-20">{pageContent}</div>
+
+      {popupMessage && (
+        <MessagePopUp
+          message={popupMessage}
+          theme="dark"
+          onClose={() => setPopupMessage(null)}
+        />
+      )}
+    </>
   );
 }
