@@ -6,7 +6,6 @@ const crypto = require("crypto");
 
 const DEFAULT_PASSWORD = "admin123";
 const DEFAULT_OTP = "123456";
-const DEFAULT_SESSION_TOKEN = "e1x9-48cs-49ax";
 
 // Test route
 router.get("/", (_req, res) => {
