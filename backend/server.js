@@ -9,13 +9,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
     res.json({
         message: "API is working!",
         type: "success"
     });
 });
 
+// Adding sub routers
+app.post("/api", require("./api"));
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
