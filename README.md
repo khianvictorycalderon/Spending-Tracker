@@ -1,6 +1,10 @@
 # Spending Tracker
 A non-account system that tracks and generate data insights about your spending.
 
+## Prerequisites:
+- Nodejs
+- MongoDB
+
 ## Cloning Project:
 - Clone this repository `git clone https://github.com/khianvictorycalderon/Spending-Tracker.git`
 
