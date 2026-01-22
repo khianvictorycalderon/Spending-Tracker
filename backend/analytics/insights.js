@@ -47,4 +47,64 @@ insightsRouter.get("/", sessionMiddleware, async (req, res) => {
   }
 });
 
+insightsRouter.get("/stats", sessionMiddleware, async (req, res) => {
+  try {
+    const users = await User.find();
+
+    if (users.length === 0) {
+      return res.status(200).json({
+        totalUsers: 0,
+        totalSpendings: 0,
+        averageSpending: 0,
+        highestSpender: null,
+        lowestSpender: null,
+      });
+    }
+
+    let totalSpendings = 0;
+    let allSpendings = [];
+    const userTotals = [];
+
+    for (const user of users) {
+      const sum = user.spendings.reduce((acc, s) => acc + s.amount, 0);
+      totalSpendings += sum;
+      allSpendings.push(...user.spendings.map(s => s.amount));
+      userTotals.push({ userId: user._id.toString(), name: user.name, total: sum });
+    }
+
+    const averageSpending = totalSpendings / allSpendings.length || 0;
+
+    userTotals.sort((a, b) => b.total - a.total);
+    const highestSpender = userTotals[0] || null;
+    const lowestSpender = userTotals[userTotals.length - 1] || null;
+
+    // Mode calculation
+    const freq = {};
+    allSpendings.forEach(val => (freq[val] = (freq[val] || 0) + 1));
+    let mode = null;
+    let maxFreq = 0;
+    for (const [key, value] of Object.entries(freq)) {
+      if (value > maxFreq) {
+        maxFreq = value;
+        mode = Number(key);
+      }
+    }
+
+    res.status(200).json({
+      totalUsers: users.length,
+      totalSpendings,
+      averageSpending,
+      modeSpending: mode,
+      highestSpender,
+      lowestSpender,
+    });
+
+  } catch (err) {
+    console.error("Stats error:", err);
+    res.status(500).json({ message: "Internal server error", type: "error" });
+  }
+});
+
+module.exports = insightsRouter;
+
 module.exports = insightsRouter;

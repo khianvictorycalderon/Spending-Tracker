@@ -22,18 +22,30 @@ interface User {
   name: string;
 }
 
+interface Stats {
+  totalUsers: number;
+  totalSpendings: number;
+  averageSpending: number;
+  modeSpending: number | null;
+  highestSpender: { userId: string; name: string; total: number } | null;
+  lowestSpender: { userId: string; name: string; total: number } | null;
+}
+
 export function InsightsPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [aggregated, setAggregated] = useState<Record<string, number>>({});
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [chartType, setChartType] = useState<"bar" | "pie">("bar");
+  const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
     fetchUsers();
+    fetchStats();
   }, []);
 
   useEffect(() => {
     fetchAggregated();
+    fetchStats();
   }, [selectedUser]);
 
   const fetchUsers = async () => {
@@ -47,11 +59,25 @@ export function InsightsPage() {
 
   const fetchAggregated = async () => {
     try {
-      const res = await axios.get(
-        `${ENV.VITE_API_URL}/api/analytics?userId=${selectedUser}`,
-        { withCredentials: true }
-      );
+      const url =
+        selectedUser === "all"
+          ? `${ENV.VITE_API_URL}/api/analytics?userId=all`
+          : `${ENV.VITE_API_URL}/api/analytics?userId=${selectedUser}`;
+      const res = await axios.get(url, { withCredentials: true });
       setAggregated(res.data.aggregated);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const url =
+        selectedUser === "all"
+          ? `${ENV.VITE_API_URL}/api/analytics/stats`
+          : `${ENV.VITE_API_URL}/api/analytics/stats?userId=${selectedUser}`;
+      const res = await axios.get(url, { withCredentials: true });
+      setStats(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -98,12 +124,30 @@ export function InsightsPage() {
         </select>
       </div>
 
-      <div className="bg-neutral-800 p-5 rounded-xl shadow-md" style={{ height: "80vh" }}>
-        {chartType === "bar" ? (
-          <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
-        ) : (
-          <Pie data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
-        )}
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-1 bg-neutral-800 p-5 rounded-xl shadow-md space-y-4">
+          <SubHeadingText className="text-yellow-400">Stats</SubHeadingText>
+          {stats ? (
+            <div className="space-y-2 text-white">
+              <p>Total Users: <span className="font-bold text-yellow-400">{stats.totalUsers}</span></p>
+              <p>Total Spendings: <span className="font-bold text-yellow-400">₱{stats.totalSpendings}</span></p>
+              <p>Average Spending: <span className="font-bold text-yellow-400">₱{stats.averageSpending.toFixed(2)}</span></p>
+              <p>Mode Spending: <span className="font-bold text-yellow-400">{stats.modeSpending !== null ? `₱${stats.modeSpending}` : "-"}</span></p>
+              <p>Highest Spender: <span className="font-bold text-yellow-400">{stats.highestSpender ? `${stats.highestSpender.name} (₱${stats.highestSpender.total})` : "-"}</span></p>
+              <p>Lowest Spender: <span className="font-bold text-yellow-400">{stats.lowestSpender ? `${stats.lowestSpender.name} (₱${stats.lowestSpender.total})` : "-"}</span></p>
+            </div>
+          ) : (
+            <p>Loading stats...</p>
+          )}
+        </div>
+
+        <div className="flex-1 bg-neutral-800 p-5 rounded-xl shadow-md" style={{ height: "80vh" }}>
+          {chartType === "bar" ? (
+            <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
+          ) : (
+            <Pie data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
+          )}
+        </div>
       </div>
     </div>
   );
