@@ -287,4 +287,6 @@ router.delete("/admin/clear", async (req, res) => {
   }
 });
 
+router.use("/user", require("./tracking/users"));
+
 module.exports = router;
