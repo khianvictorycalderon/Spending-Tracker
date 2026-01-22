@@ -1,6 +1,6 @@
 const express = require("express");
 const userRouter = express.Router();
-const User = require("../models/users"); // Make sure you have models/users.js
+const User = require("../models/users");
 const AtomicAdmin = require("../models/admin");
 
 // Middleware to check sessionToken
@@ -45,7 +45,16 @@ userRouter.delete("/:id", sessionMiddleware, async (req, res) => {
 
 // --- SPENDINGS CRUD ---
 
-// POST new spending
+// GET all spendings for a user
+userRouter.get("/:id/spending", sessionMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) return res.status(404).json({ message: "User not found", type: "error" });
+
+  res.status(200).json({ spendings: user.spendings });
+});
+
+// POST new spending for a user
 userRouter.post("/:id/spending", sessionMiddleware, async (req, res) => {
   const { id } = req.params;
   const { amount, category, note } = req.body;
@@ -53,10 +62,29 @@ userRouter.post("/:id/spending", sessionMiddleware, async (req, res) => {
   const user = await User.findById(id);
   if (!user) return res.status(404).json({ message: "User not found", type: "error" });
 
-  user.spendings.push({ amount, category, note });
+  const spending = { amount, category, note };
+  user.spendings.push(spending);
   await user.save();
 
-  res.status(201).json({ message: "Spending added", spendings: user.spendings });
+  res.status(201).json({ message: "Spending added", spending, spendings: user.spendings });
+});
+
+userRouter.put("/:id/spending/:spendingId", sessionMiddleware, async (req, res) => {
+  const { id, spendingId } = req.params;
+  const { amount, category, note } = req.body;
+
+  const user = await User.findById(id);
+  if (!user) return res.status(404).json({ message: "User not found", type: "error" });
+
+  const spending = user.spendings.id(spendingId);
+  if (!spending) return res.status(404).json({ message: "Spending not found", type: "error" });
+
+  spending.amount = amount;
+  spending.category = category;
+  spending.note = note;
+
+  await user.save();
+  res.status(200).json({ spendings: user.spendings });
 });
 
 // DELETE a spending
