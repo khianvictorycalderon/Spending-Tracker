@@ -224,4 +224,67 @@ router.post("/password/update", async (req, res) => {
   }
 });
 
+router.delete("/admin/clear", async (req, res) => {
+  try {
+
+    const token = req.cookies?.sessionToken;
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized",
+        type: "error"
+      });
+    }
+
+    const admin = await AtomicAdmin.findOne();
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found",
+        type: "error"
+      });
+    }
+
+    if (admin.sessionToken !== token) {
+      return res.status(401).json({
+        message: "Invalid session",
+        type: "error"
+      });
+    }
+
+    // Delete existing admin
+    await AtomicAdmin.deleteMany({});
+
+    // Recreate default admin
+    const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
+    const hashedOTP = await bcrypt.hash(DEFAULT_OTP, 10);
+    const newSessionToken = crypto.randomUUID();
+
+    const newAdmin = new AtomicAdmin({
+      password: hashedPassword,
+      otp: hashedOTP,
+      sessionToken: newSessionToken
+    });
+
+    await newAdmin.save();
+
+    // Logout user
+    res.clearCookie("sessionToken", {
+      path: "/"
+    });
+
+    return res.status(200).json({
+      message: "System reset successful. Admin restored to default.",
+      type: "success"
+    });
+
+  } catch (err) {
+    console.error("CLEAR ADMIN ERROR:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      type: "error"
+    });
+  }
+});
+
 module.exports = router;

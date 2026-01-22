@@ -68,8 +68,10 @@ export function AccountPage() {
     setIsFetching(prev => ({ ...prev, is_clearing_data: true }));
 
     try {
-      const res = await axios.delete(`${ENV.VITE_API_URL}/api/admin/clear`, { withCredentials: true });
-      setPopupMessage(res.data.message || "Admin account cleared. Default credentials restored.");
+      
+      await axios.delete(`${ENV.VITE_API_URL}/api/admin/clear`, { withCredentials: true });
+      window.location.reload();
+
     } catch (err: unknown) {
       const msg = axios.isAxiosError(err)
         ? err.response?.data?.message || `Request failed (${err.response?.status})`
