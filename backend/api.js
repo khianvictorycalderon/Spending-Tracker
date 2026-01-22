@@ -150,4 +150,78 @@ router.get("/check-session", async (req, res) => {
   }
 });
 
+router.post("/password/update", async (req, res) => {
+  try {
+    const { old_password, new_password, confirm_new_password } = req.body;
+
+    if (!old_password || !new_password || !confirm_new_password) {
+      return res.status(400).json({
+        message: "All fields are required",
+        type: "error"
+      });
+    }
+
+    if (new_password !== confirm_new_password) {
+      return res.status(400).json({
+        message: "Password and confirm password does not match",
+        type: "error"
+      });
+    }
+
+    const token = req.cookies?.sessionToken;
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized",
+        type: "error"
+      });
+    }
+
+    const admin = await AtomicAdmin.findOne();
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found",
+        type: "error"
+      });
+    }
+
+    if (admin.sessionToken !== token) {
+      return res.status(401).json({
+        message: "Invalid session",
+        type: "error"
+      });
+    }
+
+    const isOldPasswordValid = await bcrypt.compare(
+      old_password,
+      admin.password
+    );
+
+    if (!isOldPasswordValid) {
+      return res.status(401).json({
+        message: "Old password is incorrect",
+        type: "error"
+      });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(new_password, 10);
+
+    admin.password = hashedNewPassword;
+    await admin.save();
+
+    return res.status(200).json({
+      message: "Successfully updated password!",
+      type: "success"
+    });
+
+  } catch (err) {
+    console.error("PASSWORD UPDATE ERROR:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      type: "error"
+    });
+  }
+});
+
 module.exports = router;
