@@ -38,9 +38,9 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
   const buttonClassNames =
     "px-3 mx-1 py-2 my-2 hover:bg-neutral-700 transition duration-300 cursor-pointer";
   const navbarButtons = [
-    { label: "Account", action: () => setLoggedPage("account"), className: buttonClassNames },
     { label: "Track", action: () => setLoggedPage("track"), className: buttonClassNames },
     { label: "Insights", action: () => setLoggedPage("insights"), className: buttonClassNames },
+    { label: "Account", action: () => setLoggedPage("account"), className: buttonClassNames },
     { label: "Logout", action: handleLogout, className: buttonClassNames }
   ];
 
