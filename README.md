@@ -7,12 +7,26 @@ A non-account system that tracks and generate data insights about your spending.
 ## Backend Setup:
 1. `cd backend`
 2. `npm install` to install dependencies.
-3. `npm run dev` to test the backend.
+3. Create an `.env` file inside the `backend` folder that contains:
+  ```sql
+  PORT=<your-available-port>
+  CORS_ALLOW_ORIGIN=<your-frontend-origin>
+  MONGODB_URI=<your-mongodb-url>
+  ```
+4. `npm run dev` to test the backend.
 
 ## Frontend Setup:
 1. `cd frontend`
 2. `npm install` to install dependencies.
-3. `npm run dev` to test the frontend.
+3. Create an `.env` file inside the `frontend` folder that contains:
+  ```sql
+  VITE_API_URL=<your-express-url>
+  ```
+4. `npm run dev` to test the frontend.
+
+## NOTE
+- Make sure that PORT in the backend and PORT used in API URL in frontend are same
+- Make sure that your frontend development and CORS_ALLOW_ORIGIN are same for development
 
 ## Previews
 
