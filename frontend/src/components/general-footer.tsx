@@ -1,82 +1,57 @@
 import Footer from "./footer";
 
 export default function GeneralFooter() {
+
+    const footerButtonClassNames = "text-yellow-300 hover:text-yellow-200 transitiond duration-300";
+    const footerTextClassNames = "text-neutral-500";
+
     return (
         <Footer
           className="bg-neutral-800! border-0!"
           logo="icons/spending-tracker.png"
-          sub_logos={[
-            {
-              image: "https://cdn-icons-png.flaticon.com/512/25/25231.png", // GitHub
-              onClick: () => window.open("https://github.com/yourprofile", "_blank"),
-            },
-            {
-              image: "https://cdn-icons-png.flaticon.com/512/733/733579.png", // Twitter
-              onClick: () => window.open("https://twitter.com/yourhandle", "_blank"),
-            },
-            {
-              image: "https://cdn-icons-png.flaticon.com/512/174/174857.png", // LinkedIn
-              onClick: () => window.open("https://linkedin.com/in/yourprofile", "_blank"),
-            },
-          ]}
           texts={[
             {
-              title: "Company",
+              title: "Website Developed by",
               content: (
                 <ul className="space-y-1">
                   <li>
-                    <a href="#" className="hover:text-white">
-                      About
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white">
-                      Careers
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white">
-                      Contact
+                    <a href="https://khian.netlify.app/" target="_blank" title="Developer's official Website" className={footerButtonClassNames}>
+                      Khian Victory D. Calderon
                     </a>
                   </li>
                 </ul>
               ),
             },
             {
-              title: "Resources",
+              title: "Misc",
               content: (
                 <ul className="space-y-1">
                   <li>
-                    <a href="#" className="hover:text-white">
-                      Docs
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white">
-                      API
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-white">
-                      Blog
+                    <a href="https://khianvictorycalderon.github.io/donation/donate.html" target="_blank" title="Developer's official donation page" className={footerButtonClassNames}>
+                      Donate to Khian
                     </a>
                   </li>
                 </ul>
               ),
             },
             {
-              title: "Legal",
+              title: "Tech Stacks",
               content: (
                 <ul className="space-y-1">
                   <li>
-                    <a href="#" className="hover:text-white">
-                      Privacy Policy
-                    </a>
+                    <span className={footerTextClassNames}>
+                      React JS
+                    </span>
                   </li>
                   <li>
-                    <a href="#" className="hover:text-white">
-                      Terms of Service
-                    </a>
+                    <span className={footerTextClassNames}>
+                      Express JS
+                    </span>
+                  </li>
+                  <li>
+                    <span className={footerTextClassNames}>
+                      MongoDB
+                    </span>
                   </li>
                 </ul>
               ),

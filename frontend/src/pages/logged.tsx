@@ -6,8 +6,6 @@ import { MessagePopUp } from "../components/pop-up";
 import { AccountPage } from "./account";
 import { TrackPage } from "./track";
 import { InsightsPage } from "./insights";
-import Footer from "../components/footer";
-import GeneralFooter from "../components/general-footer";
 
 interface LoggedPageProps {
   setPage: React.Dispatch<React.SetStateAction<Pages>>;
