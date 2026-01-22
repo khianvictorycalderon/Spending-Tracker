@@ -58,7 +58,7 @@ This section is provided for reference only, to give you insight into how the pr
 ---
 
 ## Frontend Dependencies
-- `npm install tailwindcss @tailwindcss/vite axios`
+- `npm install tailwindcss @tailwindcss/vite axios chart.js react-chartjs-2`
 
 ## Frontend Configuration Dependencies
 - Update `vite.config.ts`:
