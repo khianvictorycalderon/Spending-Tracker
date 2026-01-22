@@ -252,7 +252,7 @@ router.delete("/admin/clear", async (req, res) => {
       });
     }
 
-    // Delete existing admin
+    // Schemas to be deleted, add more if necessary
     await AtomicAdmin.deleteMany({});
 
     // Recreate default admin
