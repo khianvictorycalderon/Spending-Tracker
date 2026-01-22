@@ -25,6 +25,8 @@ export function TrackPage() {
     newSpending: { amount: number; category: string; note: string };
     editingSpendingId: string | null;
     editingSpending: { amount: number; category: string; note: string };
+    editingUserId: string | null;
+    editingUserName: string;
   }>({
     users: [],
     selectedUser: null,
@@ -33,6 +35,8 @@ export function TrackPage() {
     newSpending: { amount: 0, category: "", note: "" },
     editingSpendingId: null,
     editingSpending: { amount: 0, category: "", note: "" },
+    editingUserId: null,
+    editingUserName: ""
   });
 
   useEffect(() => {
@@ -70,6 +74,39 @@ export function TrackPage() {
         ...prev,
         users: [...prev.users, res.data.user],
         newUserName: "",
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const startEditUser = (user: User) => {
+    setState(prev => ({
+      ...prev,
+      editingUserId: user._id,
+      editingUserName: user.name,
+    }));
+  };
+
+  const cancelEditUser = () => {
+    setState(prev => ({ ...prev, editingUserId: null, editingUserName: "" }));
+  };
+
+  const saveEditUser = async () => {
+    if (!state.editingUserId || !state.editingUserName.trim()) return;
+
+    try {
+      const res = await axios.put(
+        `${ENV.VITE_API_URL}/api/user/${state.editingUserId}`,
+        { name: state.editingUserName },
+        { withCredentials: true }
+      );
+
+      setState(prev => ({
+        ...prev,
+        users: prev.users.map(u => u._id === res.data.user._id ? res.data.user : u),
+        editingUserId: null,
+        editingUserName: "",
       }));
     } catch (err) {
       console.error(err);
@@ -177,14 +214,66 @@ export function TrackPage() {
           <div className="space-y-2">
             {state.users.length === 0 && <p className="text-gray-400 text-sm">No users created yet</p>}
             {state.users.map((user) => (
-              <button
-                key={user._id}
-                onClick={() => setState(prev => ({ ...prev, selectedUser: user }))}
-                className={`cursor-pointer w-full text-left px-4 py-2 rounded-lg transition
-                  ${state.selectedUser?._id === user._id ? "bg-yellow-400 text-neutral-900" : "bg-neutral-700 hover:bg-neutral-600"}`}
-              >
-                {user.name}
-              </button>
+              <div key={user._id} className="flex gap-2 items-center">
+                {state.editingUserId === user._id ? (
+                  <>
+                    <input
+                      type="text"
+                      value={state.editingUserName}
+                      onChange={e => setState(prev => ({ ...prev, editingUserName: e.target.value }))}
+                      className="flex-1 px-2 py-1 rounded-lg bg-neutral-700 text-white border border-yellow-400"
+                    />
+                    <button
+                      onClick={saveEditUser}
+                      className="cursor-pointer px-2 py-1 bg-green-600 rounded-lg text-white text-sm hover:bg-green-700 transition"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={cancelEditUser}
+                      className="cursor-pointer px-2 py-1 bg-gray-600 rounded-lg text-white text-sm hover:bg-gray-700 transition"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setState(prev => ({ ...prev, selectedUser: user }))}
+                      className={`flex-1 text-left px-4 py-2 rounded-lg transition
+                        ${state.selectedUser?._id === user._id ? "bg-yellow-400 text-neutral-900" : "bg-neutral-700 hover:bg-neutral-600"}`}
+                    >
+                      {user.name}
+                    </button>
+                    <button
+                      onClick={() => startEditUser(user)}
+                      className="cursor-pointer px-2 py-1 bg-blue-600 rounded-lg text-white text-sm hover:bg-blue-700 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await axios.delete(
+                            `${ENV.VITE_API_URL}/api/user/${user._id}`,
+                            { withCredentials: true }
+                          );
+                          setState(prev => ({
+                            ...prev,
+                            users: res.data.users,
+                            selectedUser: prev.selectedUser?._id === user._id ? null : prev.selectedUser
+                          }));
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      className="cursor-pointer px-2 py-1 bg-red-600 rounded-lg text-white text-sm hover:bg-red-700 transition"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
+              </div>
             ))}
           </div>
         </div>
