@@ -84,3 +84,36 @@ This section is provided for reference only, to give you insight into how the pr
 - After logging in, Admin should immediately change the password.
 - After each logout, a new OTP will be generated each time.
 - Admin can now add users and track their spendings, and view data insights.
+
+## Usage
+
+1. **Login**
+   - Navigate to the login page.
+   - Enter the default password and OTP (or your updated password if previously changed).
+   - Click **Login**.
+
+2. **Change Password**
+   - Immediately after login, update your password to secure your account.
+   - Enter your **old password**, **new password**, and **confirm new password**.
+   - Click **Update**.
+
+3. **Add Users**
+   - Go to the **Track Spending** page.
+   - In the **Users panel**, type the new user’s name and click **Add**.
+   - Existing users can be **edited** or **deleted**.
+
+4. **Track Spendings**
+   - Select a user from the **Users panel**.
+   - Add spendings with **Amount**, **Category**, and **Note**.
+   - Spendings can be **edited** or **deleted**.
+
+5. **View Insights / Analytics**
+   - Go to the **Insights page**.
+   - Choose to view **All Users** or a **specific user**.
+   - Select the **chart type**: Bar or Pie.
+   - View **aggregated data** and **static stats** (Total Users, Total Spendings, Average, Mode, Highest & Lowest Spender).
+   - Data is **aggregated on the backend**, so charts reflect combined spendings automatically.
+
+6. **Logout**
+   - Click **Logout** to end the session.
+   - A **new OTP** is generated for the next login.
