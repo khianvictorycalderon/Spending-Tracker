@@ -6,6 +6,8 @@ import { MessagePopUp } from "../components/pop-up";
 import { AccountPage } from "./account";
 import { TrackPage } from "./track";
 import { InsightsPage } from "./insights";
+import Footer from "../components/footer";
+import GeneralFooter from "../components/general-footer";
 
 interface LoggedPageProps {
   setPage: React.Dispatch<React.SetStateAction<Pages>>;
@@ -60,7 +62,7 @@ export default function LoggedPage({ setPage }: LoggedPageProps) {
   return (
     <>
       <NavBar className="bg-neutral-800" title="Spending Tracker" buttons={navbarButtons} />
-      <div className="min-h-screen p-20">{pageContent}</div>
+      <div className="min-h-screen pt-20">{pageContent}</div>
 
       {popupMessage && (
         <MessagePopUp

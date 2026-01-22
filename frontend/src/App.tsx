@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import VerifyPage from "./pages/verify";
 import LoggedPage from "./pages/logged";
 import axios from "axios";
+import GeneralFooter from "./components/general-footer";
 
 export type Pages = "verify" | "logged";
 
@@ -48,9 +49,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-neutral-900 text-neutral-50 flex items-center justify-center">
-      {page === "verify" && <VerifyPage setPage={setPage} />}
-      {page === "logged" && <LoggedPage setPage={setPage} />}
-    </div>
+    <>
+      <div className="min-h-screen w-full bg-neutral-900 text-neutral-50">
+        {page === "verify" && <VerifyPage setPage={setPage} />}
+        {page === "logged" && <LoggedPage setPage={setPage} />}
+      </div>
+      <GeneralFooter/>
+    </>
   );
 }
