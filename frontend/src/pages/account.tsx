@@ -3,9 +3,6 @@ import { InputLabel } from "../components/input-label";
 import { SubHeadingText } from "../components/typography";
 import { MessagePopUp, ConfirmPopUp } from "../components/pop-up";
 
-// ----------------------
-// Interfaces
-// ----------------------
 interface Passwords {
   old_password: string;
   new_password: string;
@@ -14,13 +11,7 @@ interface Passwords {
 
 type PopUpType = string | null;
 
-// ----------------------
-// Component
-// ----------------------
 export function AccountPage() {
-  // ----------------------
-  // State
-  // ----------------------
   const [passwords, setPasswords] = useState<Passwords>({
     old_password: "",
     new_password: "",
@@ -30,11 +21,7 @@ export function AccountPage() {
   const [popupMessage, setPopupMessage] = useState<PopUpType>(null);
   const [confirmClear, setConfirmClear] = useState<boolean>(false);
 
-  // ----------------------
-  // Handlers
-  // ----------------------
   const handleUpdatePassword = (): void => {
-    // Placeholder for backend call
     setPopupMessage("Password update functionality coming soon!");
   };
 
@@ -51,13 +38,9 @@ export function AccountPage() {
     setConfirmClear(false);
   };
 
-  // ----------------------
-  // JSX
-  // ----------------------
   return (
     <div className="min-h-screen p-8 text-white space-y-12">
       
-      {/* Update Password Section */}
       <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-6">
         <SubHeadingText className="text-yellow-400">Update Password</SubHeadingText>
         
@@ -100,7 +83,6 @@ export function AccountPage() {
         </div>
       </div>
 
-      {/* Clear Data Section */}
       <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-4">
         <SubHeadingText className="text-yellow-400">Clear Data</SubHeadingText>
         <p className="text-gray-400">
@@ -115,7 +97,6 @@ export function AccountPage() {
         </button>
       </div>
 
-      {/* Message Pop-up */}
       {popupMessage && (
         <MessagePopUp
           message={popupMessage}
@@ -124,7 +105,6 @@ export function AccountPage() {
         />
       )}
 
-      {/* Confirm Clear Data Pop-up */}
       {confirmClear && (
         <ConfirmPopUp
           message="Are you sure you want to clear all data? This will reset the admin account."
