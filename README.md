@@ -28,6 +28,11 @@ A non-account system that tracks and generate data insights about your spending.
 - Make sure that PORT in the backend and PORT used in API URL in frontend are same
 - Make sure that your frontend development and CORS_ALLOW_ORIGIN are same for development
 
+## Previews
+
+![Admin Login Page Preview](images/login-page.png)
+![Account Page Preview](images/account-page.png)
+
 ---
 
 ## Dependencies & Configuration
