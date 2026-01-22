@@ -31,6 +31,9 @@ A non-account system that tracks and generate data insights about your spending.
 ## Previews
 
 ![Admin Login Page Preview](images/login-page.png)
+![Tracking Page Preview](images/tracking-page.png)
+![Insight Pie Graph Preview](images/insights-1-page.png)
+![Insight Bar Graph Preview](images/insights-2-page.png)
 ![Account Page Preview](images/account-page.png)
 
 ---
