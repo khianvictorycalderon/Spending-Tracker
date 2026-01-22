@@ -1,10 +1,74 @@
 const express = require("express");
 const userRouter = express.Router();
-require("dotenv").config();
+const User = require("../models/users"); // Make sure you have models/users.js
+const AtomicAdmin = require("../models/admin");
 
-// Test route
-userRouter.get("/", (_req, res) => {
-    res.send("User API is working!");
+// Middleware to check sessionToken
+async function sessionMiddleware(req, res, next) {
+  try {
+    const token = req.cookies?.sessionToken;
+    const admin = await AtomicAdmin.findOne();
+    if (!token || !admin || admin.sessionToken !== token) {
+      return res.status(401).json({ message: "Unauthorized", type: "error" });
+    }
+    next();
+  } catch (err) {
+    console.error("Session middleware error:", err);
+    return res.status(500).json({ message: "Internal server error", type: "error" });
+  }
+}
+
+// --- USERS CRUD ---
+
+// GET all users
+userRouter.get("/", sessionMiddleware, async (req, res) => {
+  const users = await User.find();
+  res.status(200).json({ users });
+});
+
+// POST new user
+userRouter.post("/", sessionMiddleware, async (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ message: "Name is required", type: "error" });
+
+  const user = new User({ name });
+  await user.save();
+  res.status(201).json({ message: "User created", user });
+});
+
+// DELETE user
+userRouter.delete("/:id", sessionMiddleware, async (req, res) => {
+  const { id } = req.params;
+  await User.findByIdAndDelete(id);
+  res.status(200).json({ message: "User deleted" });
+});
+
+// --- SPENDINGS CRUD ---
+
+// POST new spending
+userRouter.post("/:id/spending", sessionMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const { amount, category, note } = req.body;
+
+  const user = await User.findById(id);
+  if (!user) return res.status(404).json({ message: "User not found", type: "error" });
+
+  user.spendings.push({ amount, category, note });
+  await user.save();
+
+  res.status(201).json({ message: "Spending added", spendings: user.spendings });
+});
+
+// DELETE a spending
+userRouter.delete("/:id/spending/:spendingId", sessionMiddleware, async (req, res) => {
+  const { id, spendingId } = req.params;
+  const user = await User.findById(id);
+  if (!user) return res.status(404).json({ message: "User not found", type: "error" });
+
+  user.spendings = user.spendings.filter(s => s._id.toString() !== spendingId);
+  await user.save();
+
+  res.status(200).json({ message: "Spending deleted", spendings: user.spendings });
 });
 
 module.exports = userRouter;
