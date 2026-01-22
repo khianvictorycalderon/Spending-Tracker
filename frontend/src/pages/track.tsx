@@ -30,7 +30,7 @@ export function TrackPage() {
           </SubHeadingText>
 
           <button
-            className="w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition"
+            className="cursor-pointer w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition"
           >
             + Add User
           </button>
@@ -47,7 +47,7 @@ export function TrackPage() {
                 key={user._id}
                 onClick={() => setSelectedUser(user)}
                 className={`
-                  w-full text-left px-4 py-2 rounded-lg
+                  cursor-pointer w-full text-left px-4 py-2 rounded-lg
                   transition
                   ${selectedUser?._id === user._id
                     ? "bg-yellow-400 text-neutral-900"
@@ -76,7 +76,7 @@ export function TrackPage() {
           {selectedUser && (
             <>
               <button
-                className="w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition"
+                className="cursor-pointer w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition"
               >
                 + Add Spending
               </button>
