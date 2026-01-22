@@ -41,7 +41,7 @@ export function AccountPage() {
   return (
     <div className="min-h-screen p-8 text-white space-y-12">
       
-      <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-6">
+      <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-6 max-w-none lg:max-w-1/2 mx-auto">
         <SubHeadingText className="text-yellow-400">Update Password</SubHeadingText>
         
         <div className="flex flex-col gap-4">
@@ -83,7 +83,7 @@ export function AccountPage() {
         </div>
       </div>
 
-      <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-4">
+      <div className="bg-neutral-800 p-6 rounded-xl shadow-md space-y-4 max-w-none lg:max-w-1/2 mx-auto">
         <SubHeadingText className="text-yellow-400">Clear Data</SubHeadingText>
         <p className="text-gray-400">
           Warning: This will delete the admin account and reset it to default credentials. This action cannot be undone.
