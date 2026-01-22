@@ -76,7 +76,7 @@ export function AccountPage() {
           <button
             type="button"
             onClick={handleUpdatePassword}
-            className="mt-2 w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition duration-300"
+            className="mt-2 w-full py-2 rounded-lg bg-yellow-400 text-neutral-900 font-semibold hover:bg-yellow-500 transition duration-300 cursor-pointer"
           >
             Update Password
           </button>
@@ -91,7 +91,7 @@ export function AccountPage() {
         <button
           type="button"
           onClick={handleClearData}
-          className="mt-2 w-full py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300"
+          className="mt-2 w-full py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 cursor-pointer"
         >
           Clear Data
         </button>
